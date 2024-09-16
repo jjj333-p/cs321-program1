@@ -35,6 +35,24 @@ void Database<T>::modify(const T& d) {
 }
 
 template<class T>
+void Database<T>::remove(const T& d) {
+	T tmp;
+	database.open(fName, ios::in | ios::out | ios::binary);
+	database.clear();
+	while (!database.eof()) {
+		tmp.readFromFile(database);
+		if (tmp == d) {  // overloaded ==
+			database.seekp(-d.size(), ios::cur);
+			tmp.writeNullToFile(database);
+			database.close();
+			return;
+		}
+	}
+	database.close();
+	cout << "The record to be removed is not in the database\n";
+}
+
+template<class T>
 bool Database<T>::find(const T& d) {
 	T tmp;
 	database.open(fName, ios::in | ios::binary);
@@ -79,24 +97,32 @@ void Database<T>::run() {
 	cout << "1. Add 2. Find 3. Modify a record; 4. Exit\n";
 	cout << "Enter an option: ";
 	while (cin.getline(option, 5)) {
-		if (*option == '1') {
-			cin >> rec;   // overloaded >>
-			add(rec);
+
+		switch (*option) {
+			case '1':
+				cin >> rec;   // overloaded >>
+				add(rec);
+				break;
+			case '2':
+				rec.readKey();
+				cout << "The record is ";
+				if (find(rec) == false)
+					cout << "not ";
+				cout << "in the database\n";
+				break;
+			case '3':
+				rec.readKey();
+				modify(rec);
+				break;
+			case '4':
+				rec.readKey();
+				remove(rec);
+				break;
+			case '5':
+				return;
+			default:
+				cout << "Invalid option\n";
 		}
-		else if (*option == '2') {
-			rec.readKey();
-			cout << "The record is ";
-			if (find(rec) == false)
-				cout << "not ";
-			cout << "in the database\n";
-		}
-		else if (*option == '3') {
-			rec.readKey();
-			modify(rec);
-		}
-		else if (*option != '4')
-			cout << "Wrong option\n";
-		else return;
 		cout << *this;   // overloaded <<
 		cout << "Enter an option: ";
 	}

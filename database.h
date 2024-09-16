@@ -13,6 +13,7 @@ private:
 	void add(T&);
 	bool find(const T&);
 	void modify(const T&);
+	void remove(const T&);
 	friend ostream& operator<<(ostream& out, Database& db) {
 		return db.print(out);
 	}
