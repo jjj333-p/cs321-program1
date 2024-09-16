@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdint>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ public:
 	Personal();
 	Personal(char*, char*, char*, int, int32_t);
 	void writeToFile(fstream&) const;
+	void writeNullToFile(fstream&) const;
 	void readFromFile(fstream&);
 	void readKey();
 	int size() const {
@@ -27,7 +29,7 @@ public:
 	}
 protected:
 	const int nameLen, cityLen;
-	char SSN[10], *name, *city;
+	char SSN[9], *name, *city;
 	int year;
 	int32_t salary;
 	ostream& writeLegibly(ostream&);

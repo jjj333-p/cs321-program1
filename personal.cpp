@@ -24,6 +24,21 @@ void Personal::writeToFile(fstream& out) const {
 	out.write(reinterpret_cast<const char*>(&salary), sizeof(int32_t));
 }
 
+void Personal::writeNullToFile(fstream& out) const {
+
+	//add the tombstone
+	char _ssn[9];
+	strcpy(_ssn, SSN);
+	_ssn[0] = 'N';
+
+	//writes
+	out.write(_ssn, 9);
+	out.write(name, nameLen);
+	out.write(city, cityLen);
+	out.write(reinterpret_cast<const char*>(&year), sizeof(int));
+	out.write(reinterpret_cast<const char*>(&salary), sizeof(int32_t));
+}
+
 void Personal::readFromFile(fstream& in) {
 	in.read(SSN, 9);
 	in.read(name, nameLen);
