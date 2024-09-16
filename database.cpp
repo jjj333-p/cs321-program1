@@ -77,6 +77,9 @@ ostream& Database<T>::print(ostream& out) {
 		tmp.readFromFile(database);
 		if (database.eof())
 			break;
+		//tombstoned value
+		if (tmp.is_tombstoned())
+			continue;
 		out << tmp << endl; // overloaded <<
 	}
 	database.close();
