@@ -28,7 +28,7 @@ void Personal::writeNullToFile(fstream& out) const {
 
 	//add the tombstone
 	char _ssn[9];
-	strcpy(_ssn, SSN);
+	memcpy(_ssn, SSN, 9);
 	_ssn[0] = 'N';
 
 	//writes
