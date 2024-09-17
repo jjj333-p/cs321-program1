@@ -7,6 +7,38 @@ Database<T>::Database() {
 }
 
 template<class T>
+Database<T>::~Database() {
+	//open a temporary database to write to
+	fstream tmpDatabase;
+	tmpDatabase.open("tmp_" + string(fName, 20), ios::in | ios::out | ios::binary);
+	tmpDatabase.clear();
+
+	//same as modify() sample code
+	T tmp;
+	database.open(fName, ios::in | ios::out | ios::binary);
+	database.clear();
+	while (!database.eof()) {
+
+		//read from existing database file
+		tmp.readFromFile(database);
+		database.seekp(tmp.size(), ios::cur);
+
+		//only write if not tombstoned
+		if (tmp.is_tombstoned())
+			continue;
+
+		//seek and write to new file
+		tmpDatabase.seekp(tmp.size(), ios::cur);
+		tmp.writeToFile(tmpDatabase);
+	}
+
+	//close databases
+	tmpDatabase.close();
+	database.close();
+}
+
+
+template<class T>
 void Database<T>::add(T& d) {
 	database.open(fName, ios::in | ios::out | ios::binary);
 	database.clear();
@@ -133,6 +165,6 @@ void Database<T>::run() {
 
 int main() {
 	Database<Personal>().run();
-	//Database<Student>().run();
+	// Database<Student>().run();
 	return 0;
 }

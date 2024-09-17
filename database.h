@@ -5,6 +5,7 @@ template<class T>
 class Database {
 public:
 	Database();
+	~Database();
 	void run();
 private:
 	fstream database;

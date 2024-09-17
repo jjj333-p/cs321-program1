@@ -81,3 +81,5 @@ istream& Personal::readFromConsole(istream& in) {
 	in.getline(s, 80); // get '\n'
 	return in;
 }
+
+
