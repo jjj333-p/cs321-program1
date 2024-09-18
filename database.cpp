@@ -2,8 +2,6 @@
 #include "student.h"
 #include "database.h"
 
-#include <bits/algorithmfwd.h>
-
 template<class T>
 Database<T>::Database() {
 }
@@ -27,7 +25,7 @@ Database<T>::~Database() {
 		tmp.readFromFile(database);
 
 		//only write if not tombstoned
-		if (tmp.is_tombstoned())
+		if (tmp.isNull())
 			continue;
 
 		//seek and write to new file
@@ -117,7 +115,7 @@ ostream& Database<T>::print(ostream& out) {
 		if (database.eof())
 			break;
 		//tombstoned value
-		if (tmp.is_tombstoned())
+		if (tmp.isNull())
 			continue;
 		out << tmp << endl; // overloaded <<
 	}

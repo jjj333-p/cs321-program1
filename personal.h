@@ -24,7 +24,7 @@ public:
 	int size() const {
 		return 9 + nameLen + cityLen + sizeof(year)+sizeof(salary);
 	}
-	bool is_tombstoned() {
+	bool isNull() {
 		return isdigit(SSN[0]) == 0;
 	}
 	bool operator==(const Personal& pr) const {
