@@ -2,15 +2,19 @@
 #include "student.h"
 #include "database.h"
 
+#include <bits/algorithmfwd.h>
+
 template<class T>
 Database<T>::Database() {
 }
 
 template<class T>
 Database<T>::~Database() {
+	const string tmp_fName = "tmp_" + string(fName, 20);
+
 	//open a temporary database to write to
 	fstream tmpDatabase;
-	tmpDatabase.open("tmp_" + string(fName, 20), ios::in | ios::out | ios::binary | ios::trunc);
+	tmpDatabase.open(tmp_fName, ios::in | ios::out | ios::binary | ios::trunc);
 	tmpDatabase.clear();
 
 	//same as modify() sample code
@@ -34,6 +38,10 @@ Database<T>::~Database() {
 	//close databases
 	tmpDatabase.close();
 	database.close();
+
+	//move tmp file to main file
+	std::remove(fName);
+	std::rename(tmp_fName.c_str(), fName);
 }
 
 
@@ -128,7 +136,7 @@ void Database<T>::run() {
 	database.close();
 	char option[5];
 	T rec;
-	cout << "1. Add 2. Find 3. Modify a record; 4. Exit\n";
+	cout << "1. Add 2. Find 3. Modify a record; 4. Remove a record; 5. Exit\n";
 	cout << "Enter an option: ";
 	while (cin.getline(option, 5)) {
 
