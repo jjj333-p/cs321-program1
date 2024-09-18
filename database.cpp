@@ -10,7 +10,7 @@ template<class T>
 Database<T>::~Database() {
 	//open a temporary database to write to
 	fstream tmpDatabase;
-	tmpDatabase.open("tmp_" + string(fName, 20), ios::in | ios::out | ios::binary);
+	tmpDatabase.open("tmp_" + string(fName, 20), ios::in | ios::out | ios::binary | ios::trunc);
 	tmpDatabase.clear();
 
 	//same as modify() sample code
@@ -21,7 +21,6 @@ Database<T>::~Database() {
 
 		//read from existing database file
 		tmp.readFromFile(database);
-		database.seekp(tmp.size(), ios::cur);
 
 		//only write if not tombstoned
 		if (tmp.is_tombstoned())
